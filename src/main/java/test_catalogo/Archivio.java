@@ -240,9 +240,9 @@ public class Archivio {
                             } else {
                                     try {
                                         System.out.println("Inserisci il l'anno di pubblicazione desiderato:");
-                                        long libroDesiderato = scanner.nextLong();
+                                        int annoInteressato = scanner.nextInt();
                                         Set<Libri> libro = libri.stream()
-                                                .filter(l -> l.getAnnoPubblicazione() == libroDesiderato)
+                                                .filter(l -> l.getAnnoPubblicazione() == annoInteressato)
                                                 .collect(Collectors.toSet());
 
                                         libro.forEach(l -> System.out.println(
@@ -268,9 +268,9 @@ public class Archivio {
                             } else{
                                 try {
                                     System.out.println("Inserisci il l'anno di pubblicazione desiderato:");
-                                    long libroDesiderato = scanner.nextLong();
+                                    int annoInteressato = scanner.nextInt();
                                     Set<Riviste> Rivista = riviste.stream()
-                                            .filter(l -> l.getAnnoPubblicazione() == libroDesiderato)
+                                            .filter(l -> l.getAnnoPubblicazione() == annoInteressato)
                                             .collect(Collectors.toSet());
 
                                     riviste.forEach(r -> System.out.println(
@@ -294,6 +294,39 @@ public class Archivio {
                     } else {
                         System.out.println("Non ci sono né libri o né riviste presenti nell'archvio.");
                         System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
+                        System.out.println("O inserisci 0 per terminare");
+                    }
+                } case 5 -> {
+                    if(!libri.isEmpty()){
+                            if(libri.isEmpty()){
+                                System.out.println("Non ci sono libri presenti nell'archivio");
+                            } else {
+                                try {
+                                    System.out.println("Inserisci il l'autore da ricercare:");
+                                    String autoreDesiderato = scanner.nextLine();
+                                    Set<Libri> libro = libri.stream()
+                                            .filter(l -> l.getAutore() == autoreDesiderato)
+                                            .collect(Collectors.toSet());
+
+                                    libro.forEach(l -> System.out.println(
+                                            "Titolo: " + l.getTitolo() +
+                                                    ", Autore: " + l.getAutore() +
+                                                    ", Genere: " + l.getGenere() +
+                                                    ", Anno di pubblicazione: " + l.getAnnoPubblicazione()
+                                    ));
+
+                                    if(libro.isEmpty()){
+                                        System.out.println("Prova a mettere un altro autore.");
+                                        throw new LibroORivistaNonEsistenteException("Non ci sono libri con l'autore fornito.");
+                                    }
+
+                                } catch (LibroORivistaNonEsistenteException e) {
+                                    System.out.println("Riprova ad inserire un altro anno.");
+                                }
+                            }
+                    } else {
+                        System.out.println("Non ci sono né libri presenti nell'archvio.");
+                        System.out.println("Puoi scegliere 1 per aggiungere un libro.");
                         System.out.println("O inserisci 0 per terminare");
                     }
                 }
