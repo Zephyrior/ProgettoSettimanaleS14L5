@@ -166,6 +166,60 @@ public class Archivio {
                         System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
                         System.out.println("O inserisci 0 per terminare");
                     }
+                } case 3 -> {
+                    if(!libri.isEmpty() || !riviste.isEmpty()){
+                        System.out.println("Selezione l'elemento da rimuovere?");
+                        System.out.println("1 - Libro");
+                        System.out.println("2 - Rivista");
+                        int libroORivista = scanner.nextInt();
+                        scanner.nextLine();
+                        if(libroORivista == 1){
+                            if(libri.isEmpty()){
+                                System.out.println("Non ci sono libri presenti nell'archivio");
+                            } else  {
+                                boolean validISBN = false;
+                                while(!validISBN) {
+                                    try {
+                                        System.out.println("Inserisci il Codice ISBN del libro desiderato:");
+                                        long libroDesiderato = scanner.nextLong();
+                                        Libri libro = libri.stream()
+                                                .filter(l -> l.getCodiceIsbn() == libroDesiderato)
+                                                .findAny()
+                                                .orElseThrow(() -> new LibroORivistaNonEsistenteException("Il libro con ISBN " + libroDesiderato + " non trovato."));
+
+                                        System.out.println("Il libro da rimuovere è " + libro.getTitolo() + " con codice ISBN: " + libro.getCodiceIsbn() + " è stato rimosso con successo!");
+                                        validISBN = true;
+                                        libri.remove(libro);
+                                    } catch (LibroORivistaNonEsistenteException e) {
+                                        System.out.println("Riprova ad inserire un ISBN valido");
+                                    }
+                                }
+                            }
+                        } else if(libroORivista == 2) {
+                            if(riviste.isEmpty()){
+                                System.out.println("Non ci sono riviste presenti nell'archivio");
+                            } else {
+                                boolean validISBN = false;
+                                while (!validISBN) {
+                                    try {
+                                        System.out.println("Inserisci il Codice ISBN della rivista desiderata:");
+                                        long rivistaDesiderato = scanner.nextLong();
+                                        Riviste rivista = riviste.stream()
+                                                .filter(l -> l.getCodiceIsbn() == rivistaDesiderato)
+                                                .findAny()
+                                                .orElseThrow(() -> new LibroORivistaNonEsistenteException("La rivista con ISBN " + rivistaDesiderato + " non trovata."));
+                                        System.out.println("la rivista da rimuovere è " + rivista.getTitolo() + " con codice ISBN: " + rivista.getCodiceIsbn() + " è stata rimossa con successo!");
+                                        validISBN = true;
+                                        riviste.remove(rivista);
+                                    } catch (LibroORivistaNonEsistenteException e){
+                                        System.out.println("Riprova ad inserire un ISBN valido");
+                                    }
+                                }
+                            }
+                        } else {
+                            System.out.println("Selezione non valida.");
+                        }
+                    }
                 }
             }
         }
