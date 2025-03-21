@@ -53,11 +53,11 @@ public class Archivio {
                                 System.out.println("Un libro dello stesso codice ISBN è già presente in archivio.");
                             } else {
                                 System.out.println("Inserisci il titolo del libro:");
-                                String titolo = scanner.nextLine();
+                                String titolo = scanner.nextLine().toLowerCase();
                                 System.out.println("Inserisci l'autore del libro:");
-                                String autore = scanner.nextLine();
+                                String autore = scanner.nextLine().toLowerCase();
                                 System.out.println("Inserisci il genere del libro:");
-                                String genere = scanner.nextLine();
+                                String genere = scanner.nextLine().toLowerCase();
                                 System.out.println("Inserisci l'anno di pubblicazione del libro:");
                                 int annoPubblicazione = scanner.nextInt();
                                 System.out.println("Inserisci il numero di pagine del libro:");
@@ -303,7 +303,7 @@ public class Archivio {
                             } else {
                                 try {
                                     System.out.println("Inserisci il l'autore da ricercare:");
-                                    String autoreDesiderato = scanner.nextLine();
+                                    String autoreDesiderato = scanner.nextLine().toLowerCase();
                                     Set<Libri> libro = libri.stream()
                                             .filter(l -> l.getAutore() == autoreDesiderato)
                                             .collect(Collectors.toSet());
@@ -325,7 +325,7 @@ public class Archivio {
                                 }
                             }
                     } else {
-                        System.out.println("Non ci sono né libri presenti nell'archvio.");
+                        System.out.println("Non ci sono libri presenti nell'archvio.");
                         System.out.println("Puoi scegliere 1 per aggiungere un libro.");
                         System.out.println("O inserisci 0 per terminare");
                     }
