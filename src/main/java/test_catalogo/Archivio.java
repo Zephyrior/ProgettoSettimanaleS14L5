@@ -121,35 +121,41 @@ public class Archivio {
                             if(libri.isEmpty()){
                                 System.out.println("Non ci sono libri presenti nell'archivio");
                             } else {
-                                try {
-                                    System.out.println("Inserisci il Codice ISBN del libro desiderato:");
-                                    long libroDesiderato = scanner.nextLong();
-                                    Libri libro = libri.stream()
-                                            .filter(l -> l.getCodiceIsbn() == libroDesiderato)
-                                            .findAny()
-                                            .orElseThrow(()-> new LibroORivistaNonEsistenteException("Il libro con ISBN " + libroDesiderato + " non trovato."));
+                                boolean validISBN = false;
+                                while(!validISBN) {
+                                    try {
+                                        System.out.println("Inserisci il Codice ISBN del libro desiderato:");
+                                        long libroDesiderato = scanner.nextLong();
+                                        Libri libro = libri.stream()
+                                                .filter(l -> l.getCodiceIsbn() == libroDesiderato)
+                                                .findAny()
+                                                .orElseThrow(() -> new LibroORivistaNonEsistenteException("Il libro con ISBN " + libroDesiderato + " non trovato."));
 
-                                    System.out.println("Il libro selezionato è " + libro.getTitolo() + " con codice ISBN" + libro.getCodiceIsbn());
-                                } catch (LibroORivistaNonEsistenteException e) {
-                                    System.out.println("Riprova ad inserire un ISBN valido");
-                                    throw new RuntimeException(e);
+                                        System.out.println("Il libro selezionato è " + libro.getTitolo() + " con codice ISBN: " + libro.getCodiceIsbn());
+                                        validISBN = true;
+                                    } catch (LibroORivistaNonEsistenteException e) {
+                                        System.out.println("Riprova ad inserire un ISBN valido");
+                                    }
                                 }
                             }
                         } else if(libroORivista == 2) {
                             if(riviste.isEmpty()){
                                 System.out.println("Non ci sono riviste presenti nell'archivio");
                             } else {
+                                boolean validISBN = false;
+                                while (!validISBN) {
                                 try {
-                                    System.out.println("Inserisci il Codice ISBN della rivista desiderata:");
-                                    long rivistaDesiderato = scanner.nextLong();
-                                    Riviste rivista = riviste.stream()
-                                            .filter(l -> l.getCodiceIsbn() == rivistaDesiderato)
-                                            .findAny()
-                                            .orElseThrow(()-> new LibroORivistaNonEsistenteException("La rivista con ISBN " + rivistaDesiderato + " non trovata."));
-                                    System.out.println("La rivista selezionata è " + rivista.getTitolo() + " con codice ISBN " + rivista.getCodiceIsbn() );
-                                } catch (LibroORivistaNonEsistenteException e) {
-                                    System.out.println("Riprova ad inserire un ISBN valido");
-                                    throw new RuntimeException(e);
+                                        System.out.println("Inserisci il Codice ISBN della rivista desiderata:");
+                                        long rivistaDesiderato = scanner.nextLong();
+                                        Riviste rivista = riviste.stream()
+                                                .filter(l -> l.getCodiceIsbn() == rivistaDesiderato)
+                                                .findAny()
+                                                .orElseThrow(() -> new LibroORivistaNonEsistenteException("La rivista con ISBN " + rivistaDesiderato + " non trovata."));
+                                        System.out.println("La rivista selezionata è " + rivista.getTitolo() + " con codice ISBN:  " + rivista.getCodiceIsbn());
+                                        validISBN = true;
+                                    } catch (LibroORivistaNonEsistenteException e){
+                                        System.out.println("Riprova ad inserire un ISBN valido");
+                                    }
                                 }
                             }
                         } else {
