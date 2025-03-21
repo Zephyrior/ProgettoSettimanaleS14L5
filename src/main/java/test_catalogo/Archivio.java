@@ -305,7 +305,7 @@ public class Archivio {
                                     System.out.println("Inserisci il l'autore da ricercare:");
                                     String autoreDesiderato = scanner.nextLine().toLowerCase();
                                     Set<Libri> libro = libri.stream()
-                                            .filter(l -> l.getAutore() == autoreDesiderato)
+                                            .filter(l -> l.getAutore().equals(autoreDesiderato))
                                             .collect(Collectors.toSet());
 
                                     libro.forEach(l -> System.out.println(
