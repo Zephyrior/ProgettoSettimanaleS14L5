@@ -6,6 +6,7 @@ import catalogo_bibliotecario.Riviste;
 import exceptions.LibroORivistaNonEsistenteException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Archivio {
     public static void main(String[] args) throws LibroORivistaNonEsistenteException {
@@ -20,7 +21,9 @@ public class Archivio {
             System.out.println("3 - Cancellare un libro o una rivista.");
             System.out.println("4 - Ricercare libri o riviste per l'anno di pubblicazione.");
             System.out.println("5 - Ricercare un libro per autore.");
-            System.out.println("0 - Terminare il programma");
+            System.out.println("6 - Aggiornare un libro o rivista già esistente tramite codice ISBN.");
+            System.out.println("7 - Scoprire la statistica del catalogo.");
+            System.out.println("0 - Terminare il programma.");
 
             int operazione = scanner.nextInt();
             scanner.nextLine();
@@ -112,7 +115,7 @@ public class Archivio {
                 }
                 case 2 -> {
                     if (!libri.isEmpty() || !riviste.isEmpty()) {
-                        System.out.println("Selezione l'elemento da ricercare?");
+                        System.out.println("Selezione l'elemento da ricercare.");
                         System.out.println("1 - Libro");
                         System.out.println("2 - Rivista");
                         int libroORivista = scanner.nextInt();
@@ -168,7 +171,7 @@ public class Archivio {
                     }
                 } case 3 -> {
                     if(!libri.isEmpty() || !riviste.isEmpty()){
-                        System.out.println("Selezione l'elemento da rimuovere?");
+                        System.out.println("Selezione l'elemento da rimuovere.");
                         System.out.println("1 - Libro");
                         System.out.println("2 - Rivista");
                         int libroORivista = scanner.nextInt();
@@ -219,6 +222,79 @@ public class Archivio {
                         } else {
                             System.out.println("Selezione non valida.");
                         }
+                    } else {
+                        System.out.println("Non ci sono né libri o né riviste presenti nell'archvio.");
+                        System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
+                        System.out.println("O inserisci 0 per terminare");
+                    }
+                } case 4 -> {
+                    if(!libri.isEmpty() || !riviste.isEmpty()){
+                        System.out.println("Selezione l'elemento da ricercare per anno di pubblicazione.");
+                        System.out.println("1 - Libro");
+                        System.out.println("2 - Rivista");
+                        int libroORivista = scanner.nextInt();
+                        scanner.nextLine();
+                        if(libroORivista == 1){
+                            if(libri.isEmpty()){
+                                System.out.println("Non ci sono libri presenti nell'archivio");
+                            } else {
+                                    try {
+                                        System.out.println("Inserisci il l'anno di pubblicazione desiderato:");
+                                        long libroDesiderato = scanner.nextLong();
+                                        Set<Libri> libro = libri.stream()
+                                                .filter(l -> l.getAnnoPubblicazione() == libroDesiderato)
+                                                .collect(Collectors.toSet());
+
+                                        libro.forEach(l -> System.out.println(
+                                                "Titolo: " + l.getTitolo() +
+                                                        ", Autore: " + l.getAutore() +
+                                                        ", Genere: " + l.getGenere() +
+                                                        ", Anno di pubblicazione: " + l.getAnnoPubblicazione()
+                                        ));
+
+                                        if(libro.isEmpty()){
+                                            System.out.println("Prova a mettere un altro anno.");
+                                            throw new LibroORivistaNonEsistenteException("Non ci sono libri all'anno inserito.");
+                                        }
+
+                                    } catch (LibroORivistaNonEsistenteException e) {
+                                        System.out.println("Riprova ad inserire un altro anno.");
+                                    }
+                            }
+
+                        } else if (libroORivista == 2) {
+                            if(riviste.isEmpty()){
+                                System.out.println("Non ci sono riviste presenti nell'archivio");
+                            } else{
+                                try {
+                                    System.out.println("Inserisci il l'anno di pubblicazione desiderato:");
+                                    long libroDesiderato = scanner.nextLong();
+                                    Set<Riviste> Rivista = riviste.stream()
+                                            .filter(l -> l.getAnnoPubblicazione() == libroDesiderato)
+                                            .collect(Collectors.toSet());
+
+                                    riviste.forEach(r -> System.out.println(
+                                            "Titolo: " + r.getTitolo() +
+                                                    ", Periodicità: " + r.getPeriodicità() +
+                                                    ", Anno di pubblicazione: " + r.getAnnoPubblicazione()
+                                    ));
+
+                                    if(riviste.isEmpty()){
+                                        System.out.println("Prova a mettere un altro anno.");
+                                        throw new LibroORivistaNonEsistenteException("Non ci sono riviste all'anno inserito.");
+                                    }
+
+                                } catch (LibroORivistaNonEsistenteException e) {
+                                    System.out.println("Riprova ad inserire un altro anno.");
+                                }
+                            }
+                        } else {
+                            System.out.println("Selezione non valida.");
+                        }
+                    } else {
+                        System.out.println("Non ci sono né libri o né riviste presenti nell'archvio.");
+                        System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
+                        System.out.println("O inserisci 0 per terminare");
                     }
                 }
             }
