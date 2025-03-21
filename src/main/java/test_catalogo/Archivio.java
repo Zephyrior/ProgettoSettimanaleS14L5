@@ -468,6 +468,56 @@ public class Archivio {
                         System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
                         System.out.println("O inserisci 0 per terminare");
                     }
+                } case 7 -> {
+                    if(!libri.isEmpty() && !riviste.isEmpty()){
+                        System.out.println("Statistica del catalogo:");
+                        System.out.println("Numero di libri presenti: " + libri.size());
+                        System.out.println("Numeri di riviste presenti: " + riviste.size());
+
+                        IntSummaryStatistics statLibro = libri.stream()
+                                .mapToInt(Libri::getNumeroPagine)
+                                .summaryStatistics();
+                        int numPagineMaxLibri = statLibro.getMax();
+
+                        Set<Libri> libro = libri.stream()
+                                .filter(l -> l.getNumeroPagine() == numPagineMaxLibri)
+                                .collect(Collectors.toSet());
+
+                        IntSummaryStatistics statRivista = riviste.stream()
+                                .mapToInt(Riviste::getNumeroPagine)
+                                .summaryStatistics();
+                        int numPagineMaxRiviste = statRivista.getMax();
+                        Set<Riviste> rivista = riviste.stream()
+                                .filter(r -> r.getNumeroPagine() == numPagineMaxRiviste)
+                                .collect(Collectors.toSet());
+
+                        if (numPagineMaxLibri > numPagineMaxRiviste) {
+                            System.out.println("Il libro con il numero massimo di pagine è:");
+                            libro.forEach(l -> System.out.println(
+                                    "Titolo: " + l.getTitolo() +
+                                            ", Autore: " + l.getAutore() +
+                                            ", Genere: " + l.getGenere() +
+                                            ", Numero pagine: " + l.getNumeroPagine() +
+                                            ", Anno di pubblicazione: " + l.getAnnoPubblicazione()));
+                        } else if (numPagineMaxRiviste > numPagineMaxLibri) {
+                            System.out.println("La rivista con il numero massimo di pagine è:");
+                            rivista.forEach(r -> System.out.println(
+                                    "Titolo: " + r.getTitolo() +
+                                            ", Periodicità: " + r.getPeriodicità() +
+                                            ", Numero pagine: " + r.getNumeroPagine() +
+                                            ", Anno di pubblicazione: " + r.getAnnoPubblicazione()));
+                        } else {
+                            System.out.println("i libri e le riviste hanno lo stesso numero massimo di pagine: " + numPagineMaxLibri + " pagine.");
+                        }
+                        double mediaPagineLibri = statLibro.getAverage();
+                        double mediaPagineRiviste = statRivista.getAverage();
+                        double mediaPagineElementi = (mediaPagineLibri + mediaPagineRiviste) / 2;
+                        System.out.println("Media delle pagine di tutti gli elementi: " + mediaPagineElementi);
+                    } else {
+                        System.out.println("Non ci sono né libri o né riviste presenti nell'archvio.");
+                        System.out.println("Puoi scegliere 1 per aggiungere un libro o una rivista.");
+                        System.out.println("O inserisci 0 per terminare");
+                    }
                 }
             }
         }
